@@ -15,4 +15,19 @@ export class ApiControllers {
     response.type('text/plain');
     response.send('My name is Jimmy.');
   }
+  
+  upload(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { userId } = req.body;
+      console.log("上传成功！");
+      console.log(req.body);
+      
+      res.json({
+        success: true,
+        data: 'avatar'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

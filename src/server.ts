@@ -1,10 +1,13 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import { ApiRouter } from './routes/api-routes';
- 
+import { json, urlencoded } from "body-parser";
+
 const port = 5000;
 
 const app: Express = express();
 const apiRouter = new ApiRouter;
+const jsonParser = json();
+const urlencodedParser = urlencoded({ extended: false, limit: 1024 * 1024 * 5 });
 
 app.use((request: Request, response: Response, next: NextFunction) => {
   response.setHeader("Access-Control-Allow-Origin", "*");
@@ -17,6 +20,8 @@ app.use((request: Request, response: Response, next: NextFunction) => {
   next();
 });
 
+app.use(jsonParser);
+app.use(urlencodedParser);
 app.use('', apiRouter.router)
 
 app.use((request: Request, response: Response) => {

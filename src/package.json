@@ -2,10 +2,7 @@
   "name": "pacs_server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "main": "server.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Tommy8081/PACS_SERVER.git"
@@ -24,6 +21,12 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "multer": "^1.4.3"
+  },
+  "scripts": {
+    "start": "nodemon server.ts",
+    "build": "tsc --project ./",
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
