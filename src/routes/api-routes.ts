@@ -25,6 +25,9 @@ export class ApiRouter {
     this.router.get('/', apiControllers.getHomePage);
     this.router.get('/articles', apiControllers.getArticlesPage);
     this.router.get('/about-me', apiControllers.getAboutPage);
-    this.router.post('/upload',upload.single('file'),apiControllers.upload);
+    this.router.get('/getJson',apiControllers.getJson)
+    this.router.post('/upload',upload.array('files',5),apiControllers.upload);
+    this.router.post('/user/login',apiControllers.userLogin);
+    this.router.post('/user/info',apiControllers.userInfo);
   }
 }
