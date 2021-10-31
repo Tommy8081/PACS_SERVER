@@ -103,5 +103,15 @@ declare namespace API {
     type token = {
         token?:string;
     }
+    type files = {
+        fieldname: string;
+        originalname: string;
+        encoding: string;
+        mimetype: string;
+        destination: string;
+        filename: string;
+        path: string;
+        size: number;
+    }
 
 }

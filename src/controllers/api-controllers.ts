@@ -8,6 +8,7 @@ const tokens = {
     token: 'editor-token'
   }
 }
+
 const users = {
   'admin-token': {
     roles: ['admin'],
@@ -38,18 +39,32 @@ export class ApiControllers {
     response.send('My name is Jimmy.');
   }
   
-  upload(req: Request, res: Response, next: NextFunction) {
+  async upload(req: Request, res: Response, next: NextFunction) {
     try {
-      const { userId } = req.body;
+      const result = req.files;
+      let fileUrl:Array<string> = [];
       console.log("上传成功！");
+      console.log(req.file)
       console.log(req.files);
+      console.log(req.body.FileNo);
 
-      res.json({
-        code:20000,
-        data: {
-          uuid: Date.now(),
+      if (result!.length != 0){
+        res.json({
+          code:20000,
+          data: {
+            uuid: Date.now(),
+          }
+        });
+        for(let i =0; i< result!.length ;i++){
+          // fileUrl.push(result[i])
         }
-      });
+        let preSql = `update`
+      }else{
+        res.json({
+          code:10000,
+          data: `请勿上传空文件！`
+        });
+      }
     } catch (error) {
       next(error);
     }
@@ -66,15 +81,15 @@ export class ApiControllers {
       });
       res.json(
           {
-            'code': 20000,
-            'data': result
+            code: 20000,
+            data: result
           }
         )
     } catch (e:any) {
       res.json(
         {
-          'code': 10000,
-          'data': e.toString()
+          code: 10000,
+          data: e.toString()
         }
       )
     }
@@ -85,32 +100,51 @@ export class ApiControllers {
     console.log("执行getJson！");
     res.json(
       {
-        'code': 20000,
-        'data': data
+        code: 20000,
+        data: data
       }
     )
   }
 
   userLogin(req: Request, res: Response, next: NextFunction){
+    console.log(req.body);
+    let token = `admin-token`
+    if (req.body.username != "admin"){
+        token = `editor-token`
+    }
     res.json(
       {
-        'code': 20000,
-        'data': {"token":"admin-token"}
+        code: 20000,
+        data: {"token":token}
       }
     )
   }
 
   userInfo(req: Request, res: Response, next: NextFunction){
+    console.log(req.body.token);
+    let data = {
+      roles: ['admin'],
+      introduction: 'I am a super administrator',
+      avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+      name: 'Super Admin'
+    }
+    if (req.body.token != `admin-token`){
+        data = {
+        roles: ['editor'],
+        introduction: 'I am an editor',
+        avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+        name: 'Normal Editor'
+      }
+    }
     res.json(
       {
-        'code': 20000,
-        'data': {
-          roles: ['admin'],
-          introduction: 'I am a super administrator',
-          avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-          name: 'Super Admin'
-        },
+        code: 20000,
+        data: data,
       }
     )
+  }
+
+  addform(req: Request, res: Response, next: NextFunction){
+
   }
 }
