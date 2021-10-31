@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import query  from '../db/query';
 const tokens = {
   admin: {
     token: 'admin-token'
@@ -51,6 +52,31 @@ export class ApiControllers {
       });
     } catch (error) {
       next(error);
+    }
+  }
+
+  
+  async getUser(req: Request, res: Response, next: NextFunction){
+    let queryUserSql = "select * from pacs.user t";
+    console.log("执行SQL:"+queryUserSql);
+    try {
+      let result = await query(queryUserSql);
+      result.forEach((i:any) => {
+        i.key = i.id;      
+      });
+      res.json(
+          {
+            'code': 20000,
+            'data': result
+          }
+        )
+    } catch (e:any) {
+      res.json(
+        {
+          'code': 10000,
+          'data': e.toString()
+        }
+      )
     }
   }
 
